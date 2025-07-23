@@ -14,7 +14,19 @@ let
       ];
       name = "bazel-full-env";
     };
+    bazel = bazel-env.override {
+      name = "bazel";
+      runScript = "bazel";
+    };
+    bazel-full = bazel-full-env.override {
+      name = "bazel";
+      runScript = "bazel";
+    };
     buck-env = callPackage ./buck-env.nix { };
+    buck2-fhs = buck-env.override {
+      name = "buck2";
+      runScript = "buck2";
+    };
   };
 in
 packages

@@ -9,10 +9,12 @@
   rustc,
   zlib,
   name ? "buck-env",
+  runScript ? "bash -l",
   extraPkgs ? [ ],
 }:
 buildFHSEnv {
   inherit name;
+  inherit runScript;
 
   targetPkgs =
     _pkgs:
@@ -27,7 +29,6 @@ buildFHSEnv {
       bash-completion
     ]
     ++ extraPkgs;
-  runScript = "bash -l";
 
   meta = {
     description = "Shell environment for building Buck projects";

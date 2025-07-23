@@ -7,10 +7,12 @@
   optional-shell-completion ? null,
   zlib,
   name ? "bazel-env",
+  runScript ? "bash -l",
   extraPkgs ? [ ],
 }:
 buildFHSEnv {
   inherit name;
+  inherit runScript;
 
   targetPkgs =
     _pkgs:
@@ -26,8 +28,6 @@ buildFHSEnv {
   extraBuildCommands = ''
     ln -s /usr/bin/bazelisk $out/usr/bin/bazel
   '';
-
-  runScript = "bash -l";
 
   meta = {
     description = "Shell environment for building Bazel projects";
