@@ -25,7 +25,7 @@ buildFHSEnv {
     ]
     ++ extraPkgs
     ++ lib.optional (optional-shell-completion != null) optional-shell-completion
-    ++ lib.optional (optional-shell-completion == null) [ bash-completion ];
+    ++ lib.optional (optional-shell-completion == null) bash-completion;
 
   extraBuildCommands = ''
     ln -s /usr/bin/bazelisk $out/usr/bin/bazel
