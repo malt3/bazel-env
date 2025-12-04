@@ -1,7 +1,7 @@
 {
   description = "An collection of shell environment containing Bazel, Buck2, and related tools";
-  
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
   outputs = {self, nixpkgs}:
   let
