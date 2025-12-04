@@ -2,7 +2,7 @@
 let
   callPackage = pkgs.lib.callPackageWith (pkgs // packages);
   packages = rec {
-    bazel-shell-completion = callPackage ./bazel-shell-completion.nix { };
+    bazel-shell-completion = callPackage ./bazel-shell-completion.nix { version = "8.4.2"; };
     bazel-base-env = callPackage ./bazel-env.nix { };
     bazel-env = callPackage ./bazel-env.nix { optional-shell-completion = bazel-shell-completion; };
     bazel-full-env = bazel-env.override {

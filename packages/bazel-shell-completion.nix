@@ -1,11 +1,17 @@
 {
+  lib,
   stdenv,
   fetchFromGitHub,
   bazel-base-env,
-  version ? "8.1.1",
-  sha256 ? "sha256-jIlIv/Xsq6xRDAD47BQAhYtM5dnlIDVydq5t2FyYnvw=",
-  outputHash ? "sha256-3srOsu28PBq7jibzK8VALFQ4wYrSCsaxL4TvNKpibLM=",
+  version ? "8.4.2",
 }:
+let
+  versions = import ./bazel-shell-completion-versions.nix;
+  versionData = versions.${version} or {
+    sha256 = lib.fakeHash;
+    outputHash = lib.fakeHash;
+  };
+in
 stdenv.mkDerivation {
   pname = "bazel-shell-completion";
   inherit version;
@@ -13,7 +19,7 @@ stdenv.mkDerivation {
     owner = "bazelbuild";
     repo = "bazel";
     rev = version;
-    inherit sha256;
+    sha256 = versionData.sha256;
   };
   HOME = "/tmp";
   USE_BAZEL_VERSION = version;
@@ -26,5 +32,5 @@ stdenv.mkDerivation {
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
-  inherit outputHash;
+  outputHash = versionData.outputHash;
 }
