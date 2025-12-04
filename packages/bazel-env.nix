@@ -6,6 +6,7 @@
   bash-completion,
   optional-shell-completion ? null,
   zlib,
+  zip,
   name ? "bazel-env",
   runScript ? "bash -l",
   extraPkgs ? [ ],
@@ -20,6 +21,7 @@ buildFHSEnv {
       bazelisk
       bazel-buildtools
       zlib
+      zip
     ]
     ++ extraPkgs
     ++ lib.optional (optional-shell-completion != null) optional-shell-completion
