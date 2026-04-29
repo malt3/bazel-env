@@ -1,0 +1,37 @@
+diff --git a/src/env.c b/src/env.c
+index 583f7e12b..081e587a7 100644
+--- a/src/env.c
++++ b/src/env.c
+@@ -922,7 +922,31 @@ main (int argc, char **argv)
+         devmsg ("   arg[%d]= %s\n", i-optind, quote (argv[i]));
+     }
+ 
+-  execvp (program, &argv[optind]);
++  if (getenv ("PATH"))
++    {
++      execvp (program, &argv[optind]);
++    }
++  else
++    {
++      /* If PATH is unset, search in /bin and /usr/bin */
++      if (strchr (program, '/'))
++        {
++          execv (program, &argv[optind]);
++        }
++      else
++        {
++          char path_buf[PATH_MAX];
++          snprintf (path_buf, sizeof path_buf, "/bin/%s", program);
++          execv (path_buf, &argv[optind]);
++          if (errno != ENOENT)
++            goto exec_failed;
++          
++          snprintf (path_buf, sizeof path_buf, "/usr/bin/%s", program);
++          execv (path_buf, &argv[optind]);
++        }
++    }
++
++exec_failed:
+ 
+   int exit_status = errno == ENOENT ? EXIT_ENOENT : EXIT_CANNOT_INVOKE;
+   error (0, errno, "%s", quote (program));
