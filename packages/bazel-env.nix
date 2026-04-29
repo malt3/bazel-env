@@ -4,6 +4,7 @@
   bazelisk,
   bazel-buildtools,
   bash-completion,
+  coreutils,
   optional-shell-completion ? null,
   zlib,
   zip,
@@ -11,6 +12,14 @@
   runScript ? "bash -l",
   extraPkgs ? [ ],
 }:
+let
+  coreutilsFHS = coreutils.overrideAttrs (o: {
+    pname = o.pname + "-fhs";
+    patches = (o.patches or []) ++ [
+      ./env-use-fhs-path.patch
+    ];
+  });
+in
 buildFHSEnv {
   inherit name;
   inherit runScript;
@@ -29,6 +38,7 @@ buildFHSEnv {
 
   extraBuildCommands = ''
     ln -s /usr/bin/bazelisk $out/usr/bin/bazel
+    ln -sf ${lib.getBin coreutilsFHS}/bin/env $out/usr/bin/env
   '';
 
   meta = {
